@@ -1,5 +1,6 @@
 *.uvguix*
 .vscode
+*.hex
 *.bak
 *.ddk
 *.edk
