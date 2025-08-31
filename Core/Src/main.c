@@ -20,6 +20,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "crc.h"
+#include "usart.h"
 #include "gpio.h"
 #include "fsmc.h"
 
@@ -92,14 +93,14 @@ int main(void)
   MX_GPIO_Init();
   MX_CRC_Init();
   MX_FSMC_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   delay_init();
   lcd_init();
   /* USER CODE END 2 */
-  
+
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
-
 
   /* Start scheduler */
   osKernelStart();

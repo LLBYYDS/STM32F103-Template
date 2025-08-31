@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f1xx_hal.h"
+#include "GUI.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -130,8 +131,8 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-      
-    osDelay(500);
+      HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+      osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -150,7 +151,6 @@ void UI_Func(void const * argument)
   for(;;)
   {
       osDelay(500);
-      HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
   }
   /* USER CODE END UI_Func */
 }
