@@ -1,15 +1,15 @@
 /*********************************************************************
-*                SEGGER Microcontroller GmbH & Co. KG                *
+*                    SEGGER Microcontroller GmbH                     *
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2017  SEGGER Microcontroller GmbH & Co. KG       *
+*        (c) 1996 - 2020  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.46 - Graphical user interface for embedded applications **
+** emWin V6.16 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -44,9 +44,8 @@ Purpose     : Windows manager internal include
 #ifndef WM_INTERN_H            /* Make sure we only include it once */
 #define WM_INTERN_H            /* Make sure we only include it once */
 
-#include "WM.h"
 #include "GUI_Private.h"
-
+#include "WM.h"
 
 #if defined(__cplusplus)
 extern "C" {     /* Make sure we have C-declarations in C++ programs */
@@ -164,6 +163,8 @@ GUI_EXTERN WM_CRITICAL_HANDLE * WM__pFirstCriticalHandle;
 GUI_EXTERN WM_HWIN   WM__ahDesktopWin[GUI_NUM_LAYERS];
 GUI_EXTERN GUI_COLOR WM__aBkColor[GUI_NUM_LAYERS];
 
+GUI_EXTERN U32 WM__DrawSprite;  // Required when using sprites in combination with the WM.
+
 #undef GUI_EXTERN
 
 /*********************************************************************
@@ -175,6 +176,7 @@ GUI_EXTERN GUI_COLOR WM__aBkColor[GUI_NUM_LAYERS];
 void    WM__ActivateClipRect        (void);
 int     WM__ClipAtParentBorders     (GUI_RECT * pRect, WM_HWIN hWin);
 void    WM__Client2Screen           (const WM_Obj * pWin, GUI_RECT * pRect);
+void    WM__DeactivateEx            (void);
 void    WM__DeleteAssocTimer        (WM_HWIN hWin);
 void    WM__DeleteSecure            (WM_HWIN hWin);
 void    WM__DetachWindow            (WM_HWIN hChild);

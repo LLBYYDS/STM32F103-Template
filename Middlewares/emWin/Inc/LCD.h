@@ -1,15 +1,15 @@
 /*********************************************************************
-*                SEGGER Microcontroller GmbH & Co. KG                *
+*                    SEGGER Microcontroller GmbH                     *
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2017  SEGGER Microcontroller GmbH & Co. KG       *
+*        (c) 1996 - 2020  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.46 - Graphical user interface for embedded applications **
+** emWin V6.16 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -326,10 +326,27 @@ typedef void tLCDDEV_DrawBitmap   (int x0, int y0, int xsize, int ysize,
                        int BitsPerPixel, int BytesPerLine,
                        const U8 * pData, int Diff,
                        const void * pTrans);   /* Really LCD_PIXELINDEX, but is void to avoid compiler warnings */
-#define GUI_MEMDEV_APILIST_1  &GUI_MEMDEV_DEVICE_1
-#define GUI_MEMDEV_APILIST_8  &GUI_MEMDEV_DEVICE_8
-#define GUI_MEMDEV_APILIST_16 &GUI_MEMDEV_DEVICE_16
-#define GUI_MEMDEV_APILIST_32 &GUI_MEMDEV_DEVICE_32
+
+/*********************************************************************
+*
+*       Memory device color depths
+*
+*  Description
+*    Defines the color depth of the Memory Device in bpp. The color depth of the Memory Device should be
+*    equal or greater than the required bits for the color conversion routines.
+*
+*  Additional information
+*    A Memory Device with a 1bpp color conversion (GUI_COLOR_CONV_1) for example requires at least a Memory Device with
+*    1bpp color depth. The available Memory Devices are 1bpp, 8bpp, 16bpp and 32bpp Memory Devices. So an 1bpp Memory
+*    Device should be used.
+*
+*    If using a 4 bit per pixel color conversion (GUI_COLOR_CONV_4) at least 4bpp are needed for the Memory Device. In this
+*    case an 8bpp Memory Device should be used.
+*/
+#define GUI_MEMDEV_APILIST_1  &GUI_MEMDEV_DEVICE_1    // Create Memory Device with 1bpp color depth (1 byte per 8 pixels). Use if the specified color conversion requires 1bpp.
+#define GUI_MEMDEV_APILIST_8  &GUI_MEMDEV_DEVICE_8    // Create Memory Device with 8bpp color depth (1 byte per pixel). Use if the specified color conversion requires 8bpp or less.
+#define GUI_MEMDEV_APILIST_16 &GUI_MEMDEV_DEVICE_16   // Create Memory Device with 16bpp color depth (1 U16 per pixel). Use if the specified color conversion requires more than 8 bpp (high color modes).
+#define GUI_MEMDEV_APILIST_32 &GUI_MEMDEV_DEVICE_32   // Create Memory Device with 32bpp color depth (1 U32 per pixel). Use if the specified color conversion requires more than 16 bpp (true color modes).
 
 /*********************************************************************
 *
@@ -420,16 +437,15 @@ void (* LCD_GetDevFunc(int LayerIndex, int Item))(void);
 *
 *       Runtime rotation of drivers
 */
-int LCD_ROTATE_AddDriver        (const GUI_DEVICE_API * pDriver);
-int LCD_ROTATE_AddDriverEx      (const GUI_DEVICE_API * pDeviceAPI, int LayerIndex);
-int LCD_ROTATE_DecSel           (void);
-int LCD_ROTATE_DecSelEx         (int LayerIndex);
-int LCD_ROTATE_IncSel           (void);
-int LCD_ROTATE_IncSelEx         (int LayerIndex);
-int LCD_ROTATE_SetConfigCallback(void (* pCbOnConfig)(GUI_DEVICE *, int, int), int LayerIndex);
-int LCD_ROTATE_SetSel           (int Index);
-int LCD_ROTATE_SetSelEx         (int Index, int LayerIndex);
-int LCD_ROTATE_SetSelectCallback(void (* pCbOnSelect)(int, int), int LayerIndex);
+int LCD_ROTATE_AddDriver  (const GUI_DEVICE_API * pDriver);
+int LCD_ROTATE_AddDriverEx(const GUI_DEVICE_API * pDeviceAPI, int LayerIndex);
+int LCD_ROTATE_DecSel     (void);
+int LCD_ROTATE_DecSelEx   (int LayerIndex);
+int LCD_ROTATE_IncSel     (void);
+int LCD_ROTATE_IncSelEx   (int LayerIndex);
+int LCD_ROTATE_SetCallback(void (* pCbOnConfig)(GUI_DEVICE *, int, int), int LayerIndex);
+int LCD_ROTATE_SetSel     (int Index);
+int LCD_ROTATE_SetSelEx   (int Index, int LayerIndex);
 
 /*********************************************************************
 *
@@ -443,7 +459,6 @@ int LCD_ROTATE_SetSelectCallback(void (* pCbOnSelect)(int, int), int LayerIndex)
 #define LCD_DEVFUNC_SETSIZE       0x05 /* ...setting the layer size */
 #define LCD_DEVFUNC_SETVIS        0x06 /* ...setting the visibility of a layer */
 #define LCD_DEVFUNC_24BPP         0x07 /* ...drawing 24bpp bitmaps */
-#define LCD_DEVFUNC_NEXT_PIXEL    0x08 /* ...drawing a bitmap pixel by pixel */
 #define LCD_DEVFUNC_SET_VRAM_ADDR 0x09 /* ...setting the VRAM address */
 #define LCD_DEVFUNC_SET_VSIZE     0x0A /* ...setting the VRAM size */
 #define LCD_DEVFUNC_SET_SIZE      0x0B /* ...setting the display size */
@@ -489,6 +504,7 @@ int LCD_ROTATE_SetSelectCallback(void (* pCbOnSelect)(int, int), int LayerIndex)
 #define LCD_DEVDATA_MEMDEV        0x01 /* ...default memory device API */
 #define LCD_DEVDATA_PHYSPAL       0x02 /* ...physical palette */
 #define LCD_DEVDATA_VRAMADDR      0x03 /* ...VRAM address */
+#define LCD_DEVDATA_NEXT_PIXEL    0x04 /* ...drawing a bitmap pixel by pixel */
 
 /*********************************************************************
 *

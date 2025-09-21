@@ -1,15 +1,15 @@
 /*********************************************************************
-*                SEGGER Microcontroller GmbH & Co. KG                *
+*                    SEGGER Microcontroller GmbH                     *
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2017  SEGGER Microcontroller GmbH & Co. KG       *
+*        (c) 1996 - 2020  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.46 - Graphical user interface for embedded applications **
+** emWin V6.16 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -48,7 +48,7 @@ Purpose     : Configures emWins abilities, fonts etc.
 *
 *       Multi layer/display support
 */
-#define GUI_NUM_LAYERS            1    // Maximum number of available layers
+#define GUI_NUM_LAYERS            2    // Maximum number of available layers
 
 /*********************************************************************
 *
@@ -76,6 +76,19 @@ Purpose     : Configures emWins abilities, fonts etc.
 #define GUI_WINSUPPORT       1    // Use Window Manager
 #define GUI_SUPPORT_MEMDEV   1    // Use Memory Devices
 #define GUI_SUPPORT_DEVICES  1    // Enable use of device pointers
+
+
+/**********************************************************************
+*
+*         Configuration of config switches
+*/
+#define GUI_USE_ARGB         0    // Swaps the meaning of a logical color from  ABGR to ARGB
+
+/*********************************************************************
+*
+*       Configuration of bidirectional text support
+*/
+#define GUI_SUPPORT_BIDI     0
 
 #endif  // Avoid multiple inclusion
 

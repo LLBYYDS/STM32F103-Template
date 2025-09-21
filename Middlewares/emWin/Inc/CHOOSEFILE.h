@@ -1,15 +1,15 @@
 /*********************************************************************
-*                SEGGER Microcontroller GmbH & Co. KG                *
+*                    SEGGER Microcontroller GmbH                     *
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2017  SEGGER Microcontroller GmbH & Co. KG       *
+*        (c) 1996 - 2020  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.46 - Graphical user interface for embedded applications **
+** emWin V6.16 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -67,9 +67,16 @@ extern "C" {     /* Make sure we have C-declarations in C++ programs */
   #define CHOOSEFILE_MAXLEN 256
 #endif
 
-#define CHOOSEFILE_BI_CANCEL 0
-#define CHOOSEFILE_BI_OK     1
-#define CHOOSEFILE_BI_UP     2
+/*********************************************************************
+*
+*       CHOOSEFILE button indexes
+*
+*  Description
+*    Button indexes used by the CHOOSEFILE dialog.
+*/
+#define CHOOSEFILE_BI_CANCEL 0   // Index of 'Cancel' button.
+#define CHOOSEFILE_BI_OK     1   // Index of 'Ok' button.
+#define CHOOSEFILE_BI_UP     2   // Index of 'Up' button.
 
 /*********************************************************************
 *

@@ -1,15 +1,15 @@
 /*********************************************************************
-*                SEGGER Microcontroller GmbH & Co. KG                *
+*                    SEGGER Microcontroller GmbH                     *
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2017  SEGGER Microcontroller GmbH & Co. KG       *
+*        (c) 1996 - 2020  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.46 - Graphical user interface for embedded applications **
+** emWin V6.16 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -45,7 +45,7 @@ Purpose     : RADIO include
 #define RADIO_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "WIDGET.h"
 
 #if GUI_WINSUPPORT
@@ -58,9 +58,11 @@ Purpose     : RADIO include
 *
 *       Bitmap indices
 */
-#define RADIO_BI_INACTIV 0
-#define RADIO_BI_ACTIV   1
-#define RADIO_BI_CHECK   2
+#define RADIO_BI_INACTIV  0
+#define RADIO_BI_ACTIV    1
+#define RADIO_BI_INACTIVE RADIO_BI_INACTIV
+#define RADIO_BI_ACTIVE   RADIO_BI_ACTIV
+#define RADIO_BI_CHECK    2
 
 /*********************************************************************
 *
@@ -150,6 +152,7 @@ GUI_COLOR          RADIO_GetFocusColor(RADIO_Handle hObj);
 const GUI_FONT *   RADIO_GetFont      (RADIO_Handle hObj);
 const GUI_BITMAP * RADIO_GetImage     (RADIO_Handle hObj, unsigned int Index);
 int                RADIO_GetNumItems  (RADIO_Handle hObj);
+U16                RADIO_GetSpacing   (RADIO_Handle hObj);
 int                RADIO_GetText      (RADIO_Handle hObj, unsigned Index, char * pBuffer, int MaxLen);
 GUI_COLOR          RADIO_GetTextColor (RADIO_Handle hObj);
 int                RADIO_GetUserData  (RADIO_Handle hObj, void * pDest, int NumBytes);
@@ -159,6 +162,7 @@ GUI_COLOR          RADIO_SetFocusColor(RADIO_Handle hObj, GUI_COLOR Color);
 void               RADIO_SetFont      (RADIO_Handle hObj, const GUI_FONT * pFont);
 void               RADIO_SetGroupId   (RADIO_Handle hObj, U8 GroupId);
 void               RADIO_SetImage     (RADIO_Handle hObj, const GUI_BITMAP * pBitmap, unsigned int Index);
+void               RADIO_SetSpacing   (RADIO_Handle hObj, U16 Spacing);
 void               RADIO_SetText      (RADIO_Handle hObj, const char* pText, unsigned Index);
 void               RADIO_SetTextColor (RADIO_Handle hObj, GUI_COLOR Color);
 void               RADIO_SetValue     (RADIO_Handle hObj, int v);

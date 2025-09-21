@@ -1,15 +1,15 @@
 /*********************************************************************
-*                SEGGER Microcontroller GmbH & Co. KG                *
+*                    SEGGER Microcontroller GmbH                     *
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2017  SEGGER Microcontroller GmbH & Co. KG       *
+*        (c) 1996 - 2020  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.46 - Graphical user interface for embedded applications **
+** emWin V6.16 - Graphical user interface for embedded applications **
 All  Intellectual Property rights  in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product.  This file may
@@ -45,9 +45,8 @@ Purpose     : TEXT include
 #define TEXT_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "WIDGET.h"
-#include "GUI_Debug.h"
 
 #if GUI_WINSUPPORT
 
@@ -114,22 +113,33 @@ void TEXT_Callback(WM_MESSAGE * pMsg);
 
 /* Methods changing properties */
 
-GUI_COLOR        TEXT_GetBkColor  (TEXT_Handle hObj); 
-const GUI_FONT * TEXT_GetFont     (TEXT_Handle hObj);
-int              TEXT_GetNumLines (TEXT_Handle hObj);
-int              TEXT_GetText     (TEXT_Handle hObj, char * pDest, U32 BufferSize);
-int              TEXT_GetTextAlign(TEXT_Handle hObj);
-GUI_COLOR        TEXT_GetTextColor(TEXT_Handle hObj);
-int              TEXT_GetUserData (TEXT_Handle hObj, void * pDest, int NumBytes);
-GUI_WRAPMODE     TEXT_GetWrapMode (TEXT_Handle hObj);
-void             TEXT_SetBkColor  (TEXT_Handle hObj, GUI_COLOR Color);
-void             TEXT_SetFont     (TEXT_Handle hObj, const GUI_FONT * pFont);
-int              TEXT_SetDec      (TEXT_Handle hObj, I32 v, U8 Len, U8 Shift, U8 Signed, U8 Space);
-int              TEXT_SetText     (TEXT_Handle hObj, const char * s);
-void             TEXT_SetTextAlign(TEXT_Handle hObj, int Align);
-void             TEXT_SetTextColor(TEXT_Handle hObj, GUI_COLOR Color);
-int              TEXT_SetUserData (TEXT_Handle hObj, const void * pSrc, int NumBytes);
-void             TEXT_SetWrapMode (TEXT_Handle hObj, GUI_WRAPMODE WrapMode);
+GUI_COLOR            TEXT_GetBkColor   (TEXT_Handle hObj); 
+const GUI_FONT *     TEXT_GetFont      (TEXT_Handle hObj);
+int                  TEXT_GetNumLines  (TEXT_Handle hObj);
+#if GUI_SUPPORT_ROTATION
+const GUI_ROTATION * TEXT_GetRotation  (TEXT_Handle hObj);
+#endif
+int                  TEXT_GetText      (TEXT_Handle hObj, char * pDest, U32 BufferSize);
+int                  TEXT_GetTextAlign (TEXT_Handle hObj);
+GUI_COLOR            TEXT_GetTextColor (TEXT_Handle hObj);
+GUI_COLOR            TEXT_GetFrameColor(TEXT_Handle hObj);
+void                 TEXT_GetTextOffset(TEXT_Handle hObj, int * pxPos, int * pyPos);
+int                  TEXT_GetUserData  (TEXT_Handle hObj, void * pDest, int NumBytes);
+GUI_WRAPMODE         TEXT_GetWrapMode  (TEXT_Handle hObj);
+void                 TEXT_SetBkColor   (TEXT_Handle hObj, GUI_COLOR Color);
+void                 TEXT_SetFont      (TEXT_Handle hObj, const GUI_FONT * pFont);
+int                  TEXT_SetDec       (TEXT_Handle hObj, I32 v, U8 Len, U8 Shift, U8 Signed, U8 Space);
+int                  TEXT_SetHex       (TEXT_Handle hObj, I32 v, U8 Len);
+#if GUI_SUPPORT_ROTATION
+void                 TEXT_SetRotation  (TEXT_Handle hObj, const GUI_ROTATION * pLCD_Api);
+#endif
+int                  TEXT_SetText      (TEXT_Handle hObj, const char * s);
+void                 TEXT_SetTextAlign (TEXT_Handle hObj, int Align);
+void                 TEXT_SetTextColor (TEXT_Handle hObj, GUI_COLOR Color);
+void                 TEXT_SetFrameColor(TEXT_Handle hObj, GUI_COLOR Color);
+void                 TEXT_SetTextOffset(TEXT_Handle hObj, int xPos, int yPos);
+int                  TEXT_SetUserData  (TEXT_Handle hObj, const void * pSrc, int NumBytes);
+void                 TEXT_SetWrapMode  (TEXT_Handle hObj, GUI_WRAPMODE WrapMode);
 
 /*********************************************************************
 *
@@ -138,12 +148,20 @@ void             TEXT_SetWrapMode (TEXT_Handle hObj, GUI_WRAPMODE WrapMode);
 **********************************************************************
 */
 
-const GUI_FONT * TEXT_GetDefaultFont     (void);
-GUI_COLOR        TEXT_GetDefaultTextColor(void);
-GUI_WRAPMODE     TEXT_GetDefaultWrapMode (void);
-void             TEXT_SetDefaultFont     (const GUI_FONT * pFont);
-void             TEXT_SetDefaultTextColor(GUI_COLOR Color);
-GUI_WRAPMODE     TEXT_SetDefaultWrapMode (GUI_WRAPMODE WrapMode);
+const GUI_FONT *     TEXT_GetDefaultFont      (void);
+GUI_COLOR            TEXT_GetDefaultFrameColor(void);
+#if GUI_SUPPORT_ROTATION
+const GUI_ROTATION * TEXT_GetDefaultRotation  (void);
+#endif
+GUI_COLOR            TEXT_GetDefaultTextColor (void);
+GUI_WRAPMODE         TEXT_GetDefaultWrapMode  (void);
+void                 TEXT_SetDefaultFrameColor(GUI_COLOR Color);
+void                 TEXT_SetDefaultFont      (const GUI_FONT * pFont);
+#if GUI_SUPPORT_ROTATION
+const GUI_ROTATION * TEXT_SetDefaultRotation  (const GUI_ROTATION * pLCD_Api);
+#endif
+void                 TEXT_SetDefaultTextColor (GUI_COLOR Color);
+GUI_WRAPMODE         TEXT_SetDefaultWrapMode  (GUI_WRAPMODE WrapMode);
 
 #if defined(__cplusplus)
   }
