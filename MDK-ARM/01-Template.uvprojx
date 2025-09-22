@@ -709,6 +709,11 @@
               <FileType>1</FileType>
               <FilePath>..\Middlewares\BSP\lcd.c</FilePath>
             </File>
+            <File>
+              <FileName>xpt2046.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\BSP\xpt2046.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

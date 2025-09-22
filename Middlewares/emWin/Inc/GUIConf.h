@@ -21,7 +21,7 @@ for  the  purposes  of  creating  libraries  for  ARM7, ARM9, Cortex-M
 series,  and   Cortex-R4   processor-based  devices,  sublicensed  and
 distributed as part of the  MDK-ARM  Professional  under the terms and
 conditions  of  the   End  User  License  supplied  with  the  MDK-ARM
-Professional. 
+Professional.
 Full source code is available at: www.segger.com
 
 We appreciate your understanding and fairness.
@@ -31,7 +31,7 @@ Licensor:                 SEGGER Software GmbH
 Licensed to:              ARM Ltd, 110 Fulbourn Road, CB1 9NJ Cambridge, UK
 Licensed SEGGER software: emWin
 License number:           GUI-00181
-License model:            LES-SLA-20007, Agreement, effective since October 1st 2011 
+License model:            LES-SLA-20007, Agreement, effective since October 1st 2011
 Licensed product:         MDK-ARM Professional
 Licensed platform:        ARM7/9, Cortex-M/R4
 Licensed number of seats: -
@@ -48,7 +48,7 @@ Purpose     : Configures emWins abilities, fonts etc.
 *
 *       Multi layer/display support
 */
-#define GUI_NUM_LAYERS            2    // Maximum number of available layers
+#define GUI_NUM_LAYERS            1    // Maximum number of available layers
 
 /*********************************************************************
 *
@@ -72,23 +72,10 @@ Purpose     : Configures emWins abilities, fonts etc.
 *
 *         Configuration of available packages
 */
-#define GUI_SUPPORT_MOUSE    1    // Mouse support
+#define GUI_SUPPORT_MOUSE    0    // Mouse support
 #define GUI_WINSUPPORT       1    // Use Window Manager
 #define GUI_SUPPORT_MEMDEV   1    // Use Memory Devices
 #define GUI_SUPPORT_DEVICES  1    // Enable use of device pointers
-
-
-/**********************************************************************
-*
-*         Configuration of config switches
-*/
-#define GUI_USE_ARGB         0    // Swaps the meaning of a logical color from  ABGR to ARGB
-
-/*********************************************************************
-*
-*       Configuration of bidirectional text support
-*/
-#define GUI_SUPPORT_BIDI     0
 
 #endif  // Avoid multiple inclusion
 

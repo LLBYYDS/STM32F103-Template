@@ -21,7 +21,7 @@ for  the  purposes  of  creating  libraries  for  ARM7, ARM9, Cortex-M
 series,  and   Cortex-R4   processor-based  devices,  sublicensed  and
 distributed as part of the  MDK-ARM  Professional  under the terms and
 conditions  of  the   End  User  License  supplied  with  the  MDK-ARM
-Professional. 
+Professional.
 Full source code is available at: www.segger.com
 
 We appreciate your understanding and fairness.
@@ -31,7 +31,7 @@ Licensor:                 SEGGER Software GmbH
 Licensed to:              ARM Ltd, 110 Fulbourn Road, CB1 9NJ Cambridge, UK
 Licensed SEGGER software: emWin
 License number:           GUI-00181
-License model:            LES-SLA-20007, Agreement, effective since October 1st 2011 
+License model:            LES-SLA-20007, Agreement, effective since October 1st 2011
 Licensed product:         MDK-ARM Professional
 Licensed platform:        ARM7/9, Cortex-M/R4
 Licensed number of seats: -
@@ -42,6 +42,7 @@ Purpose     : Config / System dependent externals for GUI
 */
 
 #include "GUI.h"
+#include "xpt2046.h"
 
 void GUI_TOUCH_X_ActivateX(void) {
 }
@@ -50,11 +51,13 @@ void GUI_TOUCH_X_ActivateY(void) {
 }
 
 int  GUI_TOUCH_X_MeasureX(void) {
-  return 0;
+  XPT2046_GetXY();
+  return g_touch_pos.logic_x;
 }
 
 int  GUI_TOUCH_X_MeasureY(void) {
-  return 0;
+  XPT2046_GetXY();
+  return g_touch_pos.logic_y;
 }
 
 

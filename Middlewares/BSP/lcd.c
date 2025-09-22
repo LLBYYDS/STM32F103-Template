@@ -141,7 +141,6 @@ void lcd_display_dir(uint8_t dir)
     {
         lcddev.width = 320;
         lcddev.height = 480;
-
     }
     else                /* 横屏 */
     {
