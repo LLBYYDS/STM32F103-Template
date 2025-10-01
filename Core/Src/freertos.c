@@ -112,7 +112,7 @@ void MX_FREERTOS_Init(void) {
   LED_TASKHandle = osThreadCreate(osThread(LED_TASK), NULL);
 
   /* definition and creation of UI_Task */
-  osThreadDef(UI_Task, UI_Func, osPriorityBelowNormal, 0, 1024);
+  osThreadDef(UI_Task, UI_Func, osPriorityNormal, 0, 1024);
   UI_TaskHandle = osThreadCreate(osThread(UI_Task), NULL);
 
   /* definition and creation of UI_Touch_Task */
@@ -154,10 +154,15 @@ void LED_Func(void const * argument)
 void UI_Func(void const * argument)
 {
   /* USER CODE BEGIN UI_Func */
+  GUI_Init();
+  GUI_SetBkColor(GUI_BLACK);
+  GUI_Clear();
+  GUI_CURSOR_Show();
   /* Infinite loop */
   for(;;)
   {
-      osDelay(1000);
+      GUI_Exec();
+      osDelay(5);
   }
   /* USER CODE END UI_Func */
 }
@@ -176,7 +181,7 @@ void Touch_Func(void const * argument)
   for(;;)
   {
       GUI_TOUCH_Exec();
-      osDelay(10);
+      osDelay(5);
   }
   /* USER CODE END Touch_Func */
 }

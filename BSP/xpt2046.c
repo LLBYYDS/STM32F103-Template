@@ -19,7 +19,7 @@ uint16_t XPT2046_ReadData(uint8_t cmd)
 {
     uint16_t data = 0;
     XPT2046_WriteByte(cmd);
-    for (uint32_t i = 0; i < 576; i++)    // 576 ¡Ö 72 * 8
+    for (uint32_t i = 0; i < 576; i++)    // 576 ï¿½ï¿½ 72 * 8
         __NOP();
     HAL_GPIO_WritePin(T_CLK_GPIO_Port, T_CLK_Pin, GPIO_PIN_RESET);
     for(int i=0; i<16; i++)
@@ -43,5 +43,12 @@ void XPT2046_GetXY(void)
         g_touch_pos.real_y = XPT2046_ReadData(0x90);
         g_touch_pos.logic_x = (31320 - g_touch_pos.real_x) / 93.1;
         g_touch_pos.logic_y = (31320 - g_touch_pos.real_y) / 62.5;
+    }
+    else
+    {
+        g_touch_pos.real_x = INVALIDE_POS;
+        g_touch_pos.real_y = INVALIDE_POS;
+        g_touch_pos.logic_x = INVALIDE_POS;
+        g_touch_pos.logic_y = INVALIDE_POS;
     }
 }

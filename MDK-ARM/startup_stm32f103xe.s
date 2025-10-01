@@ -1,7 +1,7 @@
 ;******************** (C) COPYRIGHT 2017 STMicroelectronics ********************
 ;* File Name          : startup_stm32f103xe.s
 ;* Author             : MCD Application Team
-;* Description        : STM32F103xE Devices vector table for MDK-ARM toolchain. 
+;* Description        : STM32F103xE Devices vector table for MDK-ARM toolchain.
 ;*                      This module performs:
 ;*                      - Set the initial SP
 ;*                      - Set the initial PC == Reset_Handler
@@ -34,7 +34,7 @@ Stack_Size		EQU     0x400
                 AREA    STACK, NOINIT, READWRITE, ALIGN=3
 Stack_Mem       SPACE   Stack_Size
 __initial_sp
-                                                  
+
 ; <h> Heap Configuration
 ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
@@ -139,18 +139,18 @@ __Vectors_End
 __Vectors_Size  EQU  __Vectors_End - __Vectors
 
                 AREA    |.text|, CODE, READONLY
-                
+
 ; Reset handler
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
                 IMPORT  __main
                 IMPORT  SystemInit
                 LDR     R0, =SystemInit
-                BLX     R0               
+                BLX     R0
                 LDR     R0, =__main
                 BX      R0
                 ENDP
-                
+
 ; Dummy Exception Handlers (infinite loops which can be modified)
 
 NMI_Handler     PROC
@@ -328,16 +328,16 @@ DMA2_Channel4_5_IRQHandler
 ; User Stack and Heap initialization
 ;*******************************************************************************
                  IF      :DEF:__MICROLIB
-                
+
                  EXPORT  __initial_sp
                  EXPORT  __heap_base
                  EXPORT  __heap_limit
-                
+
                  ELSE
-                
+
                  IMPORT  __use_two_region_memory
                  EXPORT  __user_initial_stackheap
-                 
+
 __user_initial_stackheap
 
                  LDR     R0, =  Heap_Mem
