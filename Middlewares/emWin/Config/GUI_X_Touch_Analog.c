@@ -43,6 +43,7 @@ Purpose     : Config / System dependent externals for GUI
 
 #include "GUI.h"
 #include "xpt2046.h"
+#include "usart.h"
 
 void GUI_TOUCH_X_ActivateX(void) {
 }

@@ -21,7 +21,7 @@ for  the  purposes  of  creating  libraries  for  ARM7, ARM9, Cortex-M
 series,  and   Cortex-R4   processor-based  devices,  sublicensed  and
 distributed as part of the  MDK-ARM  Professional  under the terms and
 conditions  of  the   End  User  License  supplied  with  the  MDK-ARM
-Professional. 
+Professional.
 Full source code is available at: www.segger.com
 
 We appreciate your understanding and fairness.
@@ -31,7 +31,7 @@ Licensor:                 SEGGER Software GmbH
 Licensed to:              ARM Ltd, 110 Fulbourn Road, CB1 9NJ Cambridge, UK
 Licensed SEGGER software: emWin
 License number:           GUI-00181
-License model:            LES-SLA-20007, Agreement, effective since October 1st 2011 
+License model:            LES-SLA-20007, Agreement, effective since October 1st 2011
 Licensed product:         MDK-ARM Professional
 Licensed platform:        ARM7/9, Cortex-M/R4
 Licensed number of seats: -
@@ -88,13 +88,13 @@ Attention : Do not modify this file ! If you do, you will not
 
 /* ATTENTION: This define swaps the meaning of a logical color from
    ABGR to ARGB.
-   
+
    It further swaps the meaning of a transparent pixel:
    ABGR: 0x00 means opaque, 0xFF means transparent
    ARGB: 0x00 means transparent, 0xFF means opaque (default)
 */
 #ifndef GUI_USE_ARGB
-  #define GUI_USE_ARGB 1
+  #define GUI_USE_ARGB 0
 #endif
 
 /* Define "universal pointer". Normally, this is not needed (define will expand to nothing)

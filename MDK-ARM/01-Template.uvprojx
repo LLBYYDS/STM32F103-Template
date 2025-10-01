@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Middlewares/BSP;../Middlewares/emWin/Config;../Middlewares/emWin/Inc;../Middlewares/emWin/emWin_Demo</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Middlewares/BSP;../Middlewares/emWin/Config;../Middlewares/emWin/Inc;../Middlewares/emWin/MyPractice;../Middlewares/emWin/MyPractice/GUIBuilder</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -762,7 +762,29 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Middlewares/emWin/emWin_Demo</GroupName>
+          <GroupName>Middlewares/emWin/MyPractice</GroupName>
+          <Files>
+            <File>
+              <FileName>practice.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\emWin\MyPractice\practice.c</FilePath>
+            </File>
+            <File>
+              <FileName>keqing.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\emWin\MyPractice\Imgs\keqing.c</FilePath>
+            </File>
+            <File>
+              <FileName>ButtonUsage1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\emWin\MyPractice\GUIBuilder\ButtonUsage1.c</FilePath>
+            </File>
+            <File>
+              <FileName>FramewinDLG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\emWin\MyPractice\GUIBuilder\FramewinDLG.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
