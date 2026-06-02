@@ -1,37 +1,81 @@
+/*******************************************************************************
+ * File : Source.c
+ * Author : Bin@L
+ * Created on: 2026/03/09
+ ******************************************************************************/
+
+/*******************************************************************************
+ * include
+ ******************************************************************************/
 #include "delay.h"
-#include "stm32f1xx.h"
+/*******************************************************************************
+ * static function declaration
+ ******************************************************************************/
 
-static uint32_t fac_us = 0;
-static uint32_t fac_ms = 0;
 
-void delay_init(void)
+/*******************************************************************************
+ * static variable define
+ ******************************************************************************/
+static uint32_t g_fac_us = 0;       /* us延时倍乘数 */
+
+/*******************************************************************************
+ * extern variable and declaratipn
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * global function define
+ ******************************************************************************/
+
+/*******************************************************************************
+ * static function define
+ ******************************************************************************/
+/**
+ * @brief     延时nus
+ * @note      无论是否使用OS, 都是用时钟摘取法来做us延时
+ * @param     nus: 要延时的us数
+ * @note      nus取值范围: 0 ~ (2^32 / fac_us) (fac_us一般等于系统主频, 自行套入计算)
+ * @retval    无
+ */
+void delay_us(uint32_t nus)
 {
-    fac_us = SystemCoreClock / 1000000U;   /* 1 µs 需要的时钟数 */
-    fac_ms = SystemCoreClock / 1000U;      /* 1 ms 需要的时钟数 */
+    uint32_t ticks;
+    uint32_t told, tnow, tcnt = 0;
+    uint32_t reload = SysTick->LOAD;        /* LOAD的值 */
+    ticks = nus * g_fac_us;                 /* 需要的节拍数 */
+
+    told = SysTick->VAL;                    /* 刚进入时的计数器值 */
+    while (1)
+    {
+        tnow = SysTick->VAL;
+        if (tnow != told)
+        {
+            if (tnow < told)
+            {
+                tcnt += told - tnow;        /* 这里注意一下SYSTICK是一个递减的计数器就可以了 */
+            }
+            else
+            {
+                tcnt += reload - tnow + told;
+            }
+            told = tnow;
+            if (tcnt >= ticks) 
+            {
+                break;                      /* 时间超过/等于要延迟的时间,则退出 */
+            }
+        }
+    }
 }
 
-void delay_us(uint32_t us)
+/**
+ * @brief     延时nms
+ * @param     nms: 要延时的ms数 (0< nms <= (2^32 / fac_us / 1000))(fac_us一般等于系统主频, 自行套入计算)
+ * @retval    无
+ */
+void delay_ms(uint16_t nms)
 {
-    uint32_t reload = us * fac_us;
-    if (reload > SysTick_LOAD_RELOAD_Msk)  /* 超过 24 位最大值 */
-        reload = SysTick_LOAD_RELOAD_Msk;
-
-    SysTick->LOAD  = reload - 1;
-    SysTick->VAL   = 0;
-    SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk |   /* 用 HCLK */
-                     SysTick_CTRL_ENABLE_Msk;        /* 启动 */
-
-    /* 等待 COUNTFLAG 置位 */
-    while (!(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk))
-        ;
-
-    SysTick->CTRL = 0;  /* 关闭 */
-    SysTick->VAL  = 0;
+    delay_us((uint32_t)(nms * 1000));                   /* 普通方式延时 */
 }
 
-void delay_ms(uint32_t ms)
-{
-    /* 最大只能延时 SysTick_LOAD_RELOAD_Msk / fac_ms 毫秒 */
-    while (ms--)
-        delay_us(1000);
-}
+
+

@@ -26,7 +26,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "delay.h"
 #include "lcd.h"
 /* USER CODE END Includes */
 
@@ -95,7 +94,6 @@ int main(void)
   MX_FSMC_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  delay_init();
   lcd_init();
   /* USER CODE END 2 */
 

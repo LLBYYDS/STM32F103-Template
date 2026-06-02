@@ -28,6 +28,10 @@
 #include "stm32f1xx_hal.h"
 #include "GUI.h"
 #include "usart.h"
+#include "led.h"
+#include "key.h"
+#include "beep.h"
+#include "at24c02.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -136,10 +140,26 @@ void LED_Func(void const * argument)
 {
   /* USER CODE BEGIN LED_Func */
   /* Infinite loop */
+   uint8_t wData[15] = "Hello AT24C02!";
+   uint8_t rData[15] = {0};
   for(;;)
   {
-      HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-      osDelay(500);
+      KEY_Process();
+      Key_Event key = KEY_GetEvent(KEY_WK_UP);
+      if(KEY_EVENT_SHORT_PRESS == key)
+      {
+        AT24C02_WriteMultiBytes(0x00, wData, sizeof(wData));
+        printf("Write OK!\r\n");
+      }
+
+      key = KEY_GetEvent(KEY_1);
+      if(KEY_EVENT_SHORT_PRESS == key)
+      {
+        AT24C02_ReadMultiBytes(0x00, rData, sizeof(rData));
+        printf("Read Data:%s\r\n", rData);
+      }
+
+      osDelay(KEY_SCAN_INTERVAL);
   }
   /* USER CODE END LED_Func */
 }

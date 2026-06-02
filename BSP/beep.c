@@ -1,27 +1,40 @@
 /*******************************************************************************
- * File : delay.h
+ * File : beep.c
  * Author : Bin@L
- * Created on: 2026/03/09
+ * Created on: 2026/05/27
  ******************************************************************************/
 
-#ifndef DELAY_H_
-#define DELAY_H_
 
 /*******************************************************************************
  * include
  ******************************************************************************/
-#include "stm32f1xx_hal.h"
+#include "beep.h"
+
 /*******************************************************************************
- * global type define
+ * static function declaration
  ******************************************************************************/
 
 /*******************************************************************************
- * global variable declaration
+ * static variable define
  ******************************************************************************/
 
 /*******************************************************************************
- * global function declaration
+ * extern variable and declaratipn
  ******************************************************************************/
-void delay_us(uint32_t nus);
-void delay_ms(uint16_t nms);
-#endif /* DELAY_H_ */
+
+/*******************************************************************************
+ * global variable define
+ ******************************************************************************/
+void Beep_Init(void)
+{
+    BEEP_PIN_CLK_ENABLE();
+
+    GPIO_InitTypeDef beepGpioInitStruct = {0};
+    beepGpioInitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    beepGpioInitStruct.Pin = BEEP_Pin;
+    beepGpioInitStruct.Pull = GPIO_NOPULL;
+    beepGpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(BEEP_GPIO_Port, &beepGpioInitStruct);
+
+    BEEP_OFF();
+}

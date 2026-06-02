@@ -1,5 +1,4 @@
 #include "lcd.h"
-#include "delay.h"
 
 _lcd_dev lcddev = {
     .width = 320,
@@ -50,7 +49,7 @@ void lcd_write_reg(uint16_t regno, uint16_t data)
  */
 void lcd_init(void)
 {
-    delay_ms(50);
+    HAL_Delay(50);
 
     nt35310_reginit();
 
@@ -927,7 +926,7 @@ void nt35310_reginit(void)
     lcd_wr_data(0x55);
 
     lcd_wr_regno(0x11);
-    delay_ms(100);
+    HAL_Delay(100);
     lcd_wr_regno(0x29);
     lcd_wr_regno(0x35);
     lcd_wr_data(0x00);

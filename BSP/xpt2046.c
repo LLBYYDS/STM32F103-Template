@@ -1,5 +1,4 @@
 #include "xpt2046.h"
-#include "delay.h"
 #include "lcd.h"
 
 TOUCH_POS g_touch_pos = {INVALIDE_POS, INVALIDE_POS, INVALIDE_POS, INVALIDE_POS};
