@@ -32,6 +32,7 @@
 #include "key.h"
 #include "beep.h"
 #include "at24c02.h"
+#include "w25qx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -140,25 +141,36 @@ void LED_Func(void const * argument)
 {
   /* USER CODE BEGIN LED_Func */
   /* Infinite loop */
-   uint8_t wData[15] = "Hello AT24C02!";
-   uint8_t rData[15] = {0};
+    uint8_t wData[32] = {0x00};
+    uint8_t rData[32] = {0x00};
+    for(uint8_t i = 0; i < sizeof(wData); i++)
+    {
+      wData[i] = i+1;
+    }
+    W25Qx_Init();
+    W25QX_DeviceInfo_Struct deviceInfo = W25Qx_GetDeviceInfo();
+    printf("Manu Facturer ID: %x\r\n", deviceInfo.manufacturerID);
+    printf("Memory Type: %x\r\n", deviceInfo.memoryType);
+    printf("Memory Density: %x\r\n", deviceInfo.memoryDensity);
   for(;;)
   {
       KEY_Process();
       Key_Event key = KEY_GetEvent(KEY_WK_UP);
-      if(KEY_EVENT_SHORT_PRESS == key)
-      {
-        AT24C02_WriteMultiBytes(0x00, wData, sizeof(wData));
-        printf("Write OK!\r\n");
-      }
+     if(KEY_EVENT_SHORT_PRESS == key)
+     {
+         W25QX_WriteBytes(0x00, wData, sizeof(wData));
+         printf("Write OK\r\n");
+     }
 
-      key = KEY_GetEvent(KEY_1);
-      if(KEY_EVENT_SHORT_PRESS == key)
-      {
-        AT24C02_ReadMultiBytes(0x00, rData, sizeof(rData));
-        printf("Read Data:%s\r\n", rData);
-      }
-
+     key = KEY_GetEvent(KEY_1);
+     if(KEY_EVENT_SHORT_PRESS == key)
+     {
+        W25QX_ReadBytes(0x00, rData, sizeof(rData));
+        printf("Read Data:");
+        for(uint8_t i = 0; i < sizeof(rData); i++)
+          printf(" %d", rData[i]);
+        printf("\r\n");
+     }
       osDelay(KEY_SCAN_INTERVAL);
   }
   /* USER CODE END LED_Func */

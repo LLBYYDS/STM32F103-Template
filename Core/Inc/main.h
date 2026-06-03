@@ -77,6 +77,14 @@ void Error_Handler(void);
 #define T_MISO_GPIO_Port GPIOB
 #define T_CS_Pin GPIO_PIN_11
 #define T_CS_GPIO_Port GPIOF
+#define SPI2_F_CS_Pin GPIO_PIN_12
+#define SPI2_F_CS_GPIO_Port GPIOB
+#define SPI2_SCLK_Pin GPIO_PIN_13
+#define SPI2_SCLK_GPIO_Port GPIOB
+#define SPI2_MISO_Pin GPIO_PIN_14
+#define SPI2_MISO_GPIO_Port GPIOB
+#define SPI2_MOSI_Pin GPIO_PIN_15
+#define SPI2_MOSI_GPIO_Port GPIOB
 #define LED0_Pin GPIO_PIN_5
 #define LED0_GPIO_Port GPIOB
 #define IIC_SCL_Pin GPIO_PIN_6
