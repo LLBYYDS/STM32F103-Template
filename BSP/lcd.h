@@ -56,4 +56,7 @@ void lcd_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_t color
 
 void nt35310_reginit(void);
 
+/* DMA 加速相关 */
+void lcd_dma_init(void);
+
 #endif

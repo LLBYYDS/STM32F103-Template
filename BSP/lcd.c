@@ -1,4 +1,10 @@
 #include "lcd.h"
+#include "stm32f1xx_hal_dma.h"
+
+/* DMA 句柄及行缓冲区 */
+static DMA_HandleTypeDef hdma_lcd;
+#define LCD_DMA_BUF_SIZE  1024U                     /* 每次 DMA 传输最大像素数 */
+static uint16_t lcd_dma_buf[LCD_DMA_BUF_SIZE] __attribute__((aligned(4)));
 
 _lcd_dev lcddev = {
     .width = 320,
@@ -43,6 +49,27 @@ void lcd_write_reg(uint16_t regno, uint16_t data)
 }
 
 /**
+ * @brief       DMA 初始化, 用于加速 LCD 像素填充
+ * @param       无
+ * @retval      无
+ */
+void lcd_dma_init(void)
+{
+    __HAL_RCC_DMA1_CLK_ENABLE();
+
+    hdma_lcd.Instance                 = DMA1_Channel1;
+    hdma_lcd.Init.Direction           = DMA_MEMORY_TO_MEMORY;
+    hdma_lcd.Init.PeriphInc           = DMA_PINC_ENABLE;       /* 源地址自增 */
+    hdma_lcd.Init.MemInc              = DMA_MINC_DISABLE;      /* 目的地址(LCD->LCD_RAM)固定 */
+    hdma_lcd.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+    hdma_lcd.Init.MemDataAlignment    = DMA_MDATAALIGN_HALFWORD;
+    hdma_lcd.Init.Mode                = DMA_NORMAL;
+    hdma_lcd.Init.Priority            = DMA_PRIORITY_HIGH;
+
+    HAL_DMA_Init(&hdma_lcd);
+}
+
+/**
  * @brief       初始化LCD
  * @param       无
  * @retval      无
@@ -50,6 +77,8 @@ void lcd_write_reg(uint16_t regno, uint16_t data)
 void lcd_init(void)
 {
     HAL_Delay(50);
+
+    lcd_dma_init();       /* 在使用 DMA 之前完成初始化 */
 
     nt35310_reginit();
 
@@ -176,21 +205,36 @@ void lcd_set_cursor(uint16_t x, uint16_t y)
 }
 
 /**
- * @brief       清屏函数
+ * @brief       清屏函数 (DMA 加速)
  * @param       color: 要清屏的颜色
  * @retval      无
  */
 void lcd_clear(uint16_t color)
 {
-    uint32_t index = 0;
-    uint32_t totalpoint = lcddev.width*lcddev.height;/* 得到总点数 */
+    uint32_t i;
+    uint32_t remaining = (uint32_t)lcddev.width * lcddev.height;
+    uint32_t chunk;
+
+    /* 填充 DMA 缓冲区(一次) */
+    for (i = 0U; i < LCD_DMA_BUF_SIZE; i++)
+    {
+        lcd_dma_buf[i] = color;
+    }
+
     lcd_set_cursor(0x00, 0x0000);   /* 设置光标位置 */
     lcd_write_ram_prepare();        /* 开始写入GRAM */
 
-    for (index = 0; index < totalpoint; index++)
+    /* DMA 分块传输，CPU 在此期间可处理中断 */
+    while (remaining > 0U)
     {
-        LCD->LCD_RAM = color;
-   }
+        chunk = (remaining > LCD_DMA_BUF_SIZE) ? LCD_DMA_BUF_SIZE : remaining;
+
+        HAL_DMA_Start(&hdma_lcd, (uint32_t)lcd_dma_buf,
+                      (uint32_t)&LCD->LCD_RAM, chunk);
+        HAL_DMA_PollForTransfer(&hdma_lcd, HAL_DMA_FULL_TRANSFER, 1000U);
+
+        remaining -= chunk;
+    }
 }
 
 /**
@@ -231,25 +275,39 @@ void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color)
 }
 
 /**
- * @brief       在指定区域内填充单个颜色
+ * @brief       在指定区域内填充单个颜色 (DMA 加速)
  * @param       (sx,sy),(ex,ey):填充矩形对角坐标,区域大小为:(ex - sx + 1) * (ey - sy + 1)
  * @param       color:要填充的颜色
  * @retval      无
  */
 void lcd_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_t color)
 {
-    uint16_t i, j;
-    uint16_t xlen = 0;
-    xlen = ex - sx + 1;
+    uint16_t i, row;
+    uint16_t xlen = ex - sx + 1U;
+    uint32_t fill_len, chunk, remaining;
 
-    for (i = sy; i <= ey; i++)
+    /* 预填充 DMA 缓冲区(只填一次) */
+    fill_len = (xlen < LCD_DMA_BUF_SIZE) ? xlen : LCD_DMA_BUF_SIZE;
+    for (i = 0U; i < fill_len; i++)
     {
-        lcd_set_cursor(sx, i);      /* 设置光标位置 */
+        lcd_dma_buf[i] = color;
+    }
+
+    for (row = sy; row <= ey; row++)
+    {
+        lcd_set_cursor(sx, row);    /* 设置光标位置 */
         lcd_write_ram_prepare();    /* 开始写入GRAM */
 
-        for (j = 0; j < xlen; j++)
+        remaining = xlen;
+        while (remaining > 0U)
         {
-            LCD->LCD_RAM = color;   /* 显示颜色 */
+            chunk = (remaining > LCD_DMA_BUF_SIZE) ? LCD_DMA_BUF_SIZE : remaining;
+
+            HAL_DMA_Start(&hdma_lcd, (uint32_t)lcd_dma_buf,
+                          (uint32_t)&LCD->LCD_RAM, chunk);
+            HAL_DMA_PollForTransfer(&hdma_lcd, HAL_DMA_FULL_TRANSFER, 1000U);
+
+            remaining -= chunk;
         }
     }
 }
